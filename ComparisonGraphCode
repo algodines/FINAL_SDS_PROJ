@@ -1,0 +1,97 @@
+## Side by side Perf. Bar Chart
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+en_r2 = r2_score(y_test, pred_en)
+metrics = ["R²", "MAE", "RMSE"]
+elastic_values = [en_r2, mae_en, rmse_en]
+rf_values = [rf_r2, rf_mae, rf_rmse]
+
+x = np.arange(len(metrics))
+width = 0.35
+
+plt.figure(figsize=(9,5))
+plt.bar(x - width/2, elastic_values, width, label="Elastic Net")
+plt.bar(x + width/2, rf_values, width, label="Random Forest")
+
+plt.xticks(x, metrics, fontsize=12)
+plt.ylabel("Metric Value", fontsize=12)
+plt.title("Model Performance Comparison", fontsize=14)
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+# Strongest Visual. RF performs worse across all metrics. 
+# Across all performance metrics, the Elastic Net model outperforms 
+# Random Forest.
+# It explains more variance (higher R²), makes smaller average errors 
+# (lower MAE), and has fewer large misses (lower RMSE).
+# This suggests that daily emergency volume follows mostly linear temporal 
+# patterns, which the Elastic Net captures efficiently.”
+
+# -----------------------------
+## Residual Plot Comparison
+# show where each model struggles, whether eorrors increase on high-incident days
+# whether the model underestimates spikes (they will). 
+
+import matplotlib.pyplot as plt
+
+res_en = y_test - pred_en
+res_rf = y_test - pred_rf
+
+plt.figure(figsize=(12,5))
+
+plt.subplot(1,2,1)
+plt.scatter(y_test, res_en, alpha=0.5)
+plt.axhline(0, color='red', linestyle='--')
+plt.title("Elastic Net Residuals")
+plt.xlabel("True Daily Incidents")
+plt.ylabel("Residual (Error)")
+
+plt.subplot(1,2,2)
+plt.scatter(y_test, res_rf, alpha=0.5)
+plt.axhline(0, color='red', linestyle='--')
+plt.title("Random Forest Residuals")
+plt.xlabel("True Daily Incidents")
+
+plt.tight_layout()
+plt.show()
+
+# Both models underpredict high-incident days → normal for emergency call data
+# Random Forest residuals are slightly more scattered
+# Elastic Net shows a clearer linear pattern in residuals → 
+# expected for linear model
+
+# Both models systematically underestimate high-incident days. This is common in 
+# unpredictable emergency systems. The Elastic Net residuals are smoother and 
+# more stable, while Random Forest residuals show more variability. This 
+# reinforces Elastic Net’s better generalization on unseen days.
+
+# -----------------------------
+# Pred. vs. Actual
+# Comparative line
+# how predictions follow patterns, where model lags, RF captures wiggles better
+
+plt.figure(figsize=(12,5))
+
+days = 30
+plt.plot(y_test[:days].reset_index(drop=True), label="Actual")
+plt.plot(pred_en[:days], label="Elastic Net")
+plt.plot(pred_rf[:days], label="Random Forest")
+
+plt.title("Predicted vs Actual Daily Incidents (Zoomed)")
+plt.xlabel("Day")
+plt.ylabel("Incident Count")
+plt.legend()
+plt.tight_layout()
+plt.show()
+
+# Both models follow the trend. 
+# Neither captures sharp spikes (EN better).
+# RF wingles more (captures noise)
+
+# Zooming in on a 30-day window, both models follow the general trend of daily 
+# incidents. Neither model captures sudden spikes, which reflects the intrinsic
+# unpredictability of emergency events. Elastic Net shows smoother predictions 
+# and stays closer to the actual line overall, matching our earlier metrics.
