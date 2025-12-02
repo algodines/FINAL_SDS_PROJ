@@ -11,3 +11,7 @@ Elastic Net Coefficients (Daily Incident Count Prediction)
 4      num__DayOfWeek     0.042403
 8     num__Count_lag7    -0.017018
 1  cat__Season_Summer    -0.000000
+
+Elastic Net MAE: 4.3247869623149935
+Elastic Net MSE: 31.829681262061243
+Elastic Net RMSE: 5.641779972850877
