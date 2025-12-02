@@ -1,0 +1,13 @@
+Elastic Net Coefficients (Daily Incident Count Prediction)
+
+              feature  coefficient
+6        num__Holiday     3.023581
+9      num__Count_MA7     0.865841
+5      num__IsWeekend     0.631433
+2  cat__Season_Winter     0.415796
+0  cat__Season_Spring     0.089538
+3          num__Month     0.077275
+7     num__Count_lag1     0.052398
+4      num__DayOfWeek     0.042403
+8     num__Count_lag7    -0.017018
+1  cat__Season_Summer    -0.000000
