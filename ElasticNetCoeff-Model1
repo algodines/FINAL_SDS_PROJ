@@ -15,3 +15,4 @@ Elastic Net Coefficients (Daily Incident Count Prediction)
 Elastic Net MAE: 4.3247869623149935
 Elastic Net MSE: 31.829681262061243
 Elastic Net RMSE: 5.641779972850877
+Elastic Net R²: 0.38096404958176466
